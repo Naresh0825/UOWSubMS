@@ -4,4 +4,29 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>Protected Areas</web-resource-name>
+      <url-pattern>/site/*</url-pattern>
+      <url-pattern>/api/*</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>student</role-name>
+      <role-name>teacher</role-name>
+    </auth-constraint>
+  </security-constraint>
+
+  <login-config>
+    <auth-method>OIDC</auth-method>
+  </login-config>
+
+  <security-role>
+    <role-name>student</role-name>
+  </security-role>
+  <security-role>
+    <role-name>teacher</role-name>
+  </security-role>
 </web-app>

@@ -19,10 +19,14 @@ public class StudentService {
     /**
      * Dashboard Utility: Get courses the student is already enrolled in.
      */
-    public List<Course> getEnrolledCourses(String studentId) {
+    public List<Course> getAllActiveCourses() {
+        return em.createQuery("SELECT c FROM Course c WHERE c.isActive = true", Course.class)
+                .getResultList();
+    }
+    public List<Integer> getEnrolledCourseIds(String studentId) {
         return em.createQuery(
-                        "SELECT e.course FROM Enrollment e WHERE e.student.username = :studentId",
-                        Course.class)
+                        "SELECT e.course.courseId FROM Enrollment e WHERE e.student.username = :studentId",
+                        Integer.class)
                 .setParameter("studentId", studentId)
                 .getResultList();
     }
@@ -31,10 +35,22 @@ public class StudentService {
      * Use Case: Enrol Course
      * Gets all courses that the student has NOT enrolled in yet.
      */
-    public List<Course> getAvailableCoursesToEnroll(String studentId) {
+    public void unenrollFromCourse(String studentId, int courseId) {
+        try {
+            Enrollment enrollment = em.createQuery(
+                            "SELECT e FROM Enrollment e WHERE e.student.username = :sId AND e.course.courseId = :cId",
+                            Enrollment.class)
+                    .setParameter("sId", studentId)
+                    .setParameter("cId", courseId)
+                    .getSingleResult();
+            em.remove(enrollment);
+        } catch (NoResultException e) {
+            // Student was not enrolled, safely ignore
+        }
+    }
+    public List<Course> getEnrolledCourses(String studentId) {
         return em.createQuery(
-                        "SELECT c FROM Course c WHERE c.courseId NOT IN " +
-                                "(SELECT e.course.courseId FROM Enrollment e WHERE e.student.username = :studentId)",
+                        "SELECT e.course FROM Enrollment e WHERE e.student.username = :studentId",
                         Course.class)
                 .setParameter("studentId", studentId)
                 .getResultList();

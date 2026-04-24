@@ -9,35 +9,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="aa0df71d-7c20-45e4-80a6-cf0cceafc11e" name="Changes" comment="-Completed authentication.">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/subms/student/model/Assignment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/subms/student/model/Course.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/subms/student/model/Discussion.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/subms/student/model/Enrollment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/subms/student/model/Material.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/subms/student/model/Submission.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/subms/student/model/User.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/subms/student/service/InstructorService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/subms/student/service/StudentService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/subms/student/servlet/CreateCourseServlet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/site/createcourse.jsp" afterDir="false" />
+    <list default="true" id="aa0df71d-7c20-45e4-80a6-cf0cceafc11e" name="Changes" comment="-Completed Course Management by Teacher">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/subms/student/servlet/EnrollServlet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/site/enroll.jsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/subms/student/servlet/SiteServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/subms/student/servlet/SiteServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/site/dashboard.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/site/dashboard.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/UOWSubMS.war" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/UOWSubMS/WEB-INF/classes/META-INF/persistence.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/UOWSubMS/WEB-INF/classes/META-INF/persistence.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/UOWSubMS/WEB-INF/classes/com/subms/student/StudentResource.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/UOWSubMS/WEB-INF/classes/com/subms/student/StudentResource.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/UOWSubMS/WEB-INF/classes/com/subms/student/application/RestApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/UOWSubMS/WEB-INF/classes/com/subms/student/application/RestApplication.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/UOWSubMS/WEB-INF/web.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/UOWSubMS/WEB-INF/web.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/META-INF/persistence.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/META-INF/persistence.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/subms/student/StudentResource.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/subms/student/StudentResource.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/subms/student/application/RestApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/subms/student/application/RestApplication.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/subms/student/model/Course.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/subms/student/model/Course.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/subms/student/service/StudentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/subms/student/service/StudentService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -134,7 +111,7 @@
   </component>
   <component name="RunManager">
     <configuration name="Wildfly" type="JBossConfiguration" factoryName="Local" APPLICATION_SERVER_NAME="JBoss/WildFly 31.0.1.Final" ALTERNATIVE_JRE_ENABLED="false">
-      <option name="OPEN_IN_BROWSER_URL" value="http://localhost" />
+      <option name="OPEN_IN_BROWSER_URL" value="http://localhost:80" />
       <option name="UPDATING_POLICY" value="restart-server" />
       <deployment>
         <artifact name="UOWSubMS:war exploded">
@@ -217,7 +194,7 @@
       <workItem from="1776389648432" duration="6770000" />
       <workItem from="1776475725126" duration="1893000" />
       <workItem from="1776992381837" duration="3728000" />
-      <workItem from="1776997185563" duration="4596000" />
+      <workItem from="1776997185563" duration="6516000" />
     </task>
     <task id="LOCAL-00001" summary="-Completed authentication.">
       <option name="closed" value="true" />
@@ -235,7 +212,15 @@
       <option name="project" value="LOCAL" />
       <updated>1776992448587</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="-Completed Course Management by Teacher">
+      <option name="closed" value="true" />
+      <created>1777001939074</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1777001939074</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -254,6 +239,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="-Completed authentication." />
-    <option name="LAST_COMMIT_MESSAGE" value="-Completed authentication." />
+    <MESSAGE value="-Completed Course Management by Teacher" />
+    <option name="LAST_COMMIT_MESSAGE" value="-Completed Course Management by Teacher" />
   </component>
 </project>

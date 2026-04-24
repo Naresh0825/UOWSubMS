@@ -43,8 +43,19 @@ public class Course {
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private List<Discussion> discussions;
 
+    @Column(name = "isActive", nullable = false)
+    private boolean isActive = false;
+
     // Constructors
     public Course() {}
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
 
     // Getters and Setters
     public int getCourseId() { return courseId; }

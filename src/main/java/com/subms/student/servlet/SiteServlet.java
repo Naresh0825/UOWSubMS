@@ -1,5 +1,9 @@
 package com.subms.student.servlet;
 
+import com.subms.student.model.Course;
+import com.subms.student.service.InstructorService;
+import com.subms.student.service.StudentService;
+import jakarta.ejb.EJB;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -7,33 +11,38 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.List;
 
 @WebServlet("/site")
 public class SiteServlet extends HttpServlet {
+    @EJB
+    private InstructorService instructorService;
+    @EJB
+    private StudentService studentService;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // 1. Check for OIDC Principal
         Principal principal = request.getUserPrincipal();
-
-        // 2. Handle Unauthenticated Users
         if (principal == null) {
-            // Option A: Send a 401 error
-            // response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Please log in.");
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Please log in");
+            return;
+        }
+        String userId = principal.getName();
 
-            // Option B: Redirect them to your OIDC login page (Replace with your actual login URL)
-            response.sendRedirect(request.getContextPath() + "/login");
-            return; // Stop execution so we don't forward to the JSP
+        // If user is a Teacher, fetch the courses they created
+        if (request.isUserInRole("teacher")) {
+            List<Course> createdCourses = instructorService.getInstructorCourses(userId);
+            request.setAttribute("courses", createdCourses);
         }
 
-        // 3. Role-based logic for authenticated users
-        request.setAttribute("username", principal.getName());
-        boolean isInstructor = request.isUserInRole("teacher");
-        request.setAttribute("userRole", isInstructor ? "Teacher" : "Student");
-
-        // 4. Forward to your JSP UI
+        // If user is a Student, fetch the courses they are enrolled in
+        if (request.isUserInRole("student")) {
+            // You will need a method like this in your StudentService
+            List<Course> enrolledCourses = studentService.getEnrolledCourses(userId);
+            request.setAttribute("enrolledCourses", enrolledCourses);
+        }
         request.getRequestDispatcher("/site/dashboard.jsp").forward(request, response);
     }
 }

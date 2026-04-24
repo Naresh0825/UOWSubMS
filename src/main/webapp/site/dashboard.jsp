@@ -6,8 +6,8 @@
     String username = (userPrincipal != null) ? userPrincipal.getName() : "Guest";
 
     // Check roles for conditional UI rendering
-    boolean isInstructor = request.isUserInRole("admin");
-    boolean isStudent = request.isUserInRole("user");
+    boolean isInstructor = request.isUserInRole("teacher");
+    boolean isStudent = request.isUserInRole("student");
 %>
 
 <!DOCTYPE html>

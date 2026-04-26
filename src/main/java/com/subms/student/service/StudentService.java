@@ -17,6 +17,17 @@ public class StudentService {
     private EntityManager em;
 
     /**
+     * Retrieves all announcements for a course, ordered by newest first.
+     */
+    public List<Announcement> getCourseAnnouncements(int courseId) {
+        return em.createQuery(
+                        "SELECT a FROM Announcement a WHERE a.course.courseId = :courseId ORDER BY a.postedAt DESC",
+                        Announcement.class)
+                .setParameter("courseId", courseId)
+                .getResultList();
+    }
+
+    /**
      * Dashboard Utility: Get courses the student is already enrolled in.
      */
     public List<Course> getAllActiveCourses() {

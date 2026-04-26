@@ -9,12 +9,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="aa0df71d-7c20-45e4-80a6-cf0cceafc11e" name="Changes" comment="-Completed Course Management by Teacher">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/subms/student/servlet/EnrollServlet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/site/enroll.jsp" afterDir="false" />
+    <list default="true" id="aa0df71d-7c20-45e4-80a6-cf0cceafc11e" name="Changes" comment="-Completed Course Enrollment for Students">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/subms/student/model/Announcement.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/subms/student/servlet/CourseDetailsServlet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/site/courseDetails.jsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/subms/student/model/Course.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/subms/student/model/Course.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/subms/student/service/InstructorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/subms/student/service/InstructorService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/subms/student/service/StudentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/subms/student/service/StudentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/site/dashboard.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/site/dashboard.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/UOWSubMS/WEB-INF/classes/META-INF/persistence.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/UOWSubMS/WEB-INF/classes/META-INF/persistence.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/META-INF/persistence.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/META-INF/persistence.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,7 +29,7 @@
   </component>
   <component name="ChangesViewManager" show_ignored="true" />
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="27" />
+    <option name="cachedIndexableFilesCount" value="30" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
@@ -112,6 +118,7 @@
   <component name="RunManager">
     <configuration name="Wildfly" type="JBossConfiguration" factoryName="Local" APPLICATION_SERVER_NAME="JBoss/WildFly 31.0.1.Final" ALTERNATIVE_JRE_ENABLED="false">
       <option name="OPEN_IN_BROWSER_URL" value="http://localhost:80" />
+      <option name="COMMON_VM_ARGUMENTS" value="-Djboss.bind.address=0.0.0.0 -Djboss.bind.address.management=0.0.0.0" />
       <option name="UPDATING_POLICY" value="restart-server" />
       <deployment>
         <artifact name="UOWSubMS:war exploded">
@@ -194,7 +201,8 @@
       <workItem from="1776389648432" duration="6770000" />
       <workItem from="1776475725126" duration="1893000" />
       <workItem from="1776992381837" duration="3728000" />
-      <workItem from="1776997185563" duration="6516000" />
+      <workItem from="1776997185563" duration="7329000" />
+      <workItem from="1777162334463" duration="6969000" />
     </task>
     <task id="LOCAL-00001" summary="-Completed authentication.">
       <option name="closed" value="true" />
@@ -220,7 +228,15 @@
       <option name="project" value="LOCAL" />
       <updated>1777001939074</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="-Completed Course Enrollment for Students">
+      <option name="closed" value="true" />
+      <created>1777003835059</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1777003835059</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -240,6 +256,18 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="-Completed authentication." />
     <MESSAGE value="-Completed Course Management by Teacher" />
-    <option name="LAST_COMMIT_MESSAGE" value="-Completed Course Management by Teacher" />
+    <MESSAGE value="-Completed Course Enrollment for Students" />
+    <option name="LAST_COMMIT_MESSAGE" value="-Completed Course Enrollment for Students" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/subms/student/servlet/CourseDetailsServlet.java</url>
+          <line>61</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

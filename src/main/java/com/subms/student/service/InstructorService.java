@@ -11,7 +11,20 @@ public class InstructorService {
 
     @PersistenceContext(unitName = "CoursePU")
     private EntityManager em;
-
+    /**
+     * Use Case: Post Announcements
+     * Creates a new announcement for a specific course.
+     */
+    public void postAnnouncement(int courseId, String title, String content) {
+        Course course = em.find(Course.class, courseId);
+        if (course != null) {
+            Announcement announcement = new Announcement();
+            announcement.setCourse(course);
+            announcement.setTitle(title);
+            announcement.setContent(content);
+            em.persist(announcement);
+        }
+    }
     /**
      * Use Case: Course Setup
      * Creates a course space and uploads the syllabus[cite: 29, 32].
@@ -95,6 +108,29 @@ public class InstructorService {
         if (submission != null) {
             submission.setGrade(grade);
             em.merge(submission); // Update grade [cite: 37]
+        }
+    }
+    /**
+     * Replaces the course syllabus with a new file.
+     */
+    public void updateCourseOutline(int courseId, byte[] newContent, String newFilename) {
+        Course course = em.find(Course.class, courseId);
+        if (course != null) {
+            course.setOutlineContent(newContent);
+            course.setOutlineFilename(newFilename);
+            em.merge(course);
+        }
+    }
+
+    /**
+     * Deletes the course syllabus.
+     */
+    public void deleteCourseOutline(int courseId) {
+        Course course = em.find(Course.class, courseId);
+        if (course != null) {
+            course.setOutlineContent(null);
+            course.setOutlineFilename(null);
+            em.merge(course);
         }
     }
 }

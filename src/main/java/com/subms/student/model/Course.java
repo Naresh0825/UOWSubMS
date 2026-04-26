@@ -44,7 +44,7 @@ public class Course {
     private List<Discussion> discussions;
 
     @Column(name = "isActive", nullable = false)
-    private boolean isActive = false;
+    private boolean isActive;
 
     // Constructors
     public Course() {}

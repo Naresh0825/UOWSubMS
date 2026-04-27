@@ -42,6 +42,9 @@ public class CourseDetailsServlet extends HttpServlet {
         List<Announcement> announcements = studentService.getCourseAnnouncements(courseId);
         request.setAttribute("announcements", announcements);
 
+        List<Discussion> discussions = studentService.getTopLevelDiscussions(courseId);
+        request.setAttribute("discussions", discussions);
+
         request.setAttribute("course", course);
         request.getRequestDispatcher("/site/courseDetails.jsp").forward(request, response);
     }
@@ -58,6 +61,14 @@ public class CourseDetailsServlet extends HttpServlet {
 
         int courseId = Integer.parseInt(request.getParameter("courseId"));
         String action = request.getParameter("action");
+        String userId = request.getUserPrincipal().getName();
+
+        // Student & Instructor Actions
+        if ("post_discussion".equals(action)) {
+            String content = request.getParameter("content");
+            // parentPostId is null for top-level threads
+            studentService.postDiscussionMessage(courseId, userId, content, null);
+        }
 
         if ("post_announcement".equals(action)) {
             String title = request.getParameter("title");

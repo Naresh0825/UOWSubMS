@@ -15,6 +15,17 @@ public class StudentService {
 
     @PersistenceContext(unitName = "CoursePU")
     private EntityManager em;
+    /**
+     * Use Case: View Discussions
+     * Retrieves top-level discussion threads for a course.
+     */
+    public List<Discussion> getTopLevelDiscussions(int courseId) {
+        return em.createQuery(
+                        "SELECT d FROM Discussion d WHERE d.course.courseId = :courseId AND d.parentPost IS NULL ORDER BY d.created_at DESC",
+                        Discussion.class)
+                .setParameter("courseId", courseId)
+                .getResultList();
+    }
 
     /**
      * Retrieves all announcements for a course, ordered by newest first.

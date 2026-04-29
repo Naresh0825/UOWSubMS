@@ -30,7 +30,7 @@ public class Discussion {
     private List<Discussion> replies;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date created_at = new Date();
+    private Date created_at;
 
     // Getters and Setters...
 

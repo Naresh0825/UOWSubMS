@@ -124,6 +124,65 @@
         <p style="color: #666;">Materials will be listed here...</p>
     </div>
 
+    <div class="section">
+        <h2>Discussion Forum</h2>
+        <p style="color: #666;">Ask questions, share resources, and collaborate with your peers.</p>
+        <% if (isInstructor) { %>
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; margin-bottom: 20px; border: 1px solid #ddd;">
+            <form action="${pageContext.request.contextPath}/course-details" method="post" style="margin: 0; display: flex; flex-direction: column; gap: 10px;">
+                <input type="hidden" name="courseId" value="${course.courseId}">
+                <input type="hidden" name="action" value="post_discussion">
+
+                <textarea name="content" rows="3" placeholder="Start a new discussion topic..." required style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; resize: vertical; width: 100%; box-sizing: border-box;"></textarea>
+
+                <button type="submit" class="btn btn-primary" style="align-self: flex-end;">Post Topic</button>
+            </form>
+        </div>
+<% } %>
+        <c:choose>
+            <c:when test="${empty discussions}">
+                <p style="color: #666; text-align: center; padding: 20px;">No discussions yet. Be the first to start a conversation!</p>
+            </c:when>
+            <c:otherwise>
+                <div style="display: flex; flex-direction: column; gap: 15px;">
+                    <c:forEach var="post" items="${discussions}">
+
+<%--                        <div style="border: 1px solid #e0e0e0; border-radius: 6px; padding: 15px; background: #fff;">--%>
+<%--                            <div style="display: flex; justify-content: space-between; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 10px;">--%>
+<%--                                <div>--%>
+<%--                                    <strong style="color: ${post.author.role == 'teacher' ? '#dc3545' : '#0d6efd'};">--%>
+<%--                                            ${post.author.fullname}--%>
+<%--                                        <c:if test="${post.author.role == 'teacher'}">(Instructor)</c:if>--%>
+<%--                                    </strong>--%>
+<%--                                    <br>--%>
+<%--                                    <small style="color: #888;">${post.createdAt}</small>--%>
+<%--                                </div>--%>
+
+                                <% if (isInstructor) { %>
+                                <form action="${pageContext.request.contextPath}/course-details" method="post" style="margin: 0;">
+                                    <input type="hidden" name="courseId" value="${course.courseId}">
+                                    <input type="hidden" name="postId" value="${post.postId}">
+                                    <input type="hidden" name="action" value="delete_discussion">
+                                    <button type="submit" class="btn btn-danger" style="padding: 4px 8px; font-size: 0.8em;" onclick="return confirm('Delete this post and all its replies?');">Delete</button>
+                                </form>
+                                <% } %>
+                            </div>
+
+
+                            <a href="${pageContext.request.contextPath}/discussion-details?topicId=${post.getPost_id()}" style="text-decoration: none; color: inherit; display: block;">
+                                <div style="border: 1px solid #e0e0e0; border-radius: 6px; padding: 15px; background: #fff; transition: background-color 0.2s;">
+                                    <h3 style="margin: 0; color: #0d6efd;">${post.content}</h3>
+                                    <small style="color: #888;">Started by ${post.author.fullname} on ${post.createdAt}</small>
+                                </div>
+                            </a>
+
+                        </div>
+
+                    </c:forEach>
+                </div>
+            </c:otherwise>
+        </c:choose>
+    </div>
 </div>
 
 </body>

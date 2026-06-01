@@ -9,22 +9,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="aa0df71d-7c20-45e4-80a6-cf0cceafc11e" name="Changes" comment="-Completed create discussion for instructor and reply for both role">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/subms/student/resource/UserResource.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/subms/student/service/UserService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/subms/student/servlet/AssignmentServlet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/subms/student/servlet/FileDownloadServlet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/subms/student/servlet/SubmissionServlet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/site/assignments.jsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/site/submissions.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/subms/student/model/Assignment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/subms/student/model/Assignment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/subms/student/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/subms/student/model/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/subms/student/service/InstructorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/subms/student/service/InstructorService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/subms/student/service/StudentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/subms/student/service/StudentService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/site/courseDetails.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/site/courseDetails.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/site/dashboard.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/site/dashboard.jsp" afterDir="false" />
-    </list>
+    <list default="true" id="aa0df71d-7c20-45e4-80a6-cf0cceafc11e" name="Changes" comment="-assignment implementation completed" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -216,7 +201,7 @@
       <workItem from="1778821761898" duration="660000" />
       <workItem from="1778837587352" duration="326000" />
       <workItem from="1780014243867" duration="3000" />
-      <workItem from="1780190353850" duration="7304000" />
+      <workItem from="1780190353850" duration="7614000" />
     </task>
     <task id="LOCAL-00001" summary="-Completed authentication.">
       <option name="closed" value="true" />
@@ -266,7 +251,15 @@
       <option name="project" value="LOCAL" />
       <updated>1777257628407</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="-assignment implementation completed">
+      <option name="closed" value="true" />
+      <created>1780317688491</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1780317688492</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -289,6 +282,7 @@
     <MESSAGE value="-Completed Course Enrollment for Students" />
     <MESSAGE value="-Completed Post Announcement for instructor" />
     <MESSAGE value="-Completed create discussion for instructor and reply for both role" />
-    <option name="LAST_COMMIT_MESSAGE" value="-Completed create discussion for instructor and reply for both role" />
+    <MESSAGE value="-assignment implementation completed" />
+    <option name="LAST_COMMIT_MESSAGE" value="-assignment implementation completed" />
   </component>
 </project>

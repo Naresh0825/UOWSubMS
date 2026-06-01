@@ -1,0 +1,10 @@
+{
+  "client-id": "0061f0a79d0c4540b7c3d4f071f12646",
+  "provider-url": "https://uowtech.kinde.com",
+  "ssl-required": "external",
+  "credentials": {
+    "secret": "G5Uh8rEybHBO6eBFyFiQOcNXSaVFzleMOgkccW4VQ2c5r3pisP3S"
+  },
+  "principal-attribute": "preferred_username",
+  "autodetect-bearer-only": true
+}

@@ -119,9 +119,66 @@
         </c:choose>
     </div>
 
+    <div class="section" style="background-color: #e9ecef; padding: 20px; border-radius: 8px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h2 style="margin-top: 0; color: #333;">Assignments & Submissions</h2>
+            <a href="${pageContext.request.contextPath}/assignments?courseId=${course.courseId}" class="btn btn-primary">Go to Assignments &rarr;</a>
+        </div>
+        <% if (isStudent) { %>
+        <p style="color: #555; margin-bottom: 0;">Check upcoming deadlines, download resource files, and upload your coursework submissions here.</p>
+        <% } else if (isInstructor) { %>
+        <p style="color: #555; margin-bottom: 0;">Create new assignments, upload instructions, and review student submissions here.</p>
+        <% } %>
+    </div>
+
     <div class="section">
-        <h2>Course Materials</h2>
-        <p style="color: #666;">Materials will be listed here...</p>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h2>Course Materials</h2>
+        </div>
+
+        <% if (isInstructor) { %>
+        <div class="admin-controls" style="margin-bottom: 20px;">
+            <h4 style="margin-top: 0;">Upload New Course Material</h4>
+            <form action="${pageContext.request.contextPath}/course-details" method="post" enctype="multipart/form-data" style="margin: 0; display: flex; gap: 10px; align-items: center;">
+                <input type="hidden" name="courseId" value="${course.courseId}">
+                <input type="hidden" name="action" value="upload_material">
+
+                <input type="text" name="materialTitle" placeholder="Title (e.g. Week 1 Slides)" required style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; flex-grow: 1;">
+                <input type="file" name="materialFile" required>
+                <button type="submit" class="btn btn-primary">Upload Material</button>
+            </form>
+        </div>
+        <% } %>
+
+        <c:choose>
+            <c:when test="${empty materials}">
+                <p style="color: #666; background: #f8f9fa; padding: 15px; border-radius: 5px; text-align: center;">No course materials have been uploaded yet.</p>
+            </c:when>
+            <c:otherwise>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <c:forEach var="material" items="${materials}">
+                        <div class="file-box">
+                            <div>
+                                <strong style="color: #333; display: block; margin-bottom: 5px;">${material.title}</strong>
+                                <span style="font-size: 0.9em; color: #666;">📄 ${material.file_name}</span>
+                            </div>
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                <a href="${pageContext.request.contextPath}/download-file?type=material&id=${material.material_id}" class="btn btn-primary" style="padding: 6px 12px;">Download</a>
+
+                                <% if (isInstructor) { %>
+                                <form action="${pageContext.request.contextPath}/course-details" method="post" style="margin: 0;">
+                                    <input type="hidden" name="courseId" value="${course.courseId}">
+                                    <input type="hidden" name="materialId" value="${material.material_id}">
+                                    <input type="hidden" name="action" value="delete_material">
+                                    <button type="submit" class="btn btn-danger" style="padding: 6px 12px;" onclick="return confirm('Are you sure you want to delete this material?');">Delete</button>
+                                </form>
+                                <% } %>
+                            </div>
+                        </div>
+                    </c:forEach>
+                </div>
+            </c:otherwise>
+        </c:choose>
     </div>
 
     <div class="section">
@@ -138,7 +195,8 @@
                 <button type="submit" class="btn btn-primary" style="align-self: flex-end;">Post Topic</button>
             </form>
         </div>
-<% } %>
+        <% } %>
+
         <c:choose>
             <c:when test="${empty discussions}">
                 <p style="color: #666; text-align: center; padding: 20px;">No discussions yet. Be the first to start a conversation!</p>
@@ -146,38 +204,27 @@
             <c:otherwise>
                 <div style="display: flex; flex-direction: column; gap: 15px;">
                     <c:forEach var="post" items="${discussions}">
+                        <div style="border: 1px solid #e0e0e0; border-radius: 6px; padding: 15px; background: #fff; transition: background-color 0.2s;">
 
-<%--                        <div style="border: 1px solid #e0e0e0; border-radius: 6px; padding: 15px; background: #fff;">--%>
-<%--                            <div style="display: flex; justify-content: space-between; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 10px;">--%>
-<%--                                <div>--%>
-<%--                                    <strong style="color: ${post.author.role == 'teacher' ? '#dc3545' : '#0d6efd'};">--%>
-<%--                                            ${post.author.fullname}--%>
-<%--                                        <c:if test="${post.author.role == 'teacher'}">(Instructor)</c:if>--%>
-<%--                                    </strong>--%>
-<%--                                    <br>--%>
-<%--                                    <small style="color: #888;">${post.createdAt}</small>--%>
-<%--                                </div>--%>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                                <small style="color: #888;">
+                                    Started by <strong style="color: ${post.author.role == 'teacher' ? '#dc3545' : '#0d6efd'};">${post.author.fullname}</strong> on ${post.createdAt}
+                                </small>
 
                                 <% if (isInstructor) { %>
                                 <form action="${pageContext.request.contextPath}/course-details" method="post" style="margin: 0;">
                                     <input type="hidden" name="courseId" value="${course.courseId}">
-                                    <input type="hidden" name="postId" value="${post.postId}">
+                                    <input type="hidden" name="postId" value="${post.post_id}">
                                     <input type="hidden" name="action" value="delete_discussion">
                                     <button type="submit" class="btn btn-danger" style="padding: 4px 8px; font-size: 0.8em;" onclick="return confirm('Delete this post and all its replies?');">Delete</button>
                                 </form>
                                 <% } %>
                             </div>
 
-
-                            <a href="${pageContext.request.contextPath}/discussion-details?topicId=${post.getPost_id()}" style="text-decoration: none; color: inherit; display: block;">
-                                <div style="border: 1px solid #e0e0e0; border-radius: 6px; padding: 15px; background: #fff; transition: background-color 0.2s;">
-                                    <h3 style="margin: 0; color: #0d6efd;">${post.content}</h3>
-                                    <small style="color: #888;">Started by ${post.author.fullname} on ${post.createdAt}</small>
-                                </div>
+                            <a href="${pageContext.request.contextPath}/discussion-details?topicId=${post.post_id}" style="text-decoration: none; color: inherit; display: block;">
+                                <h3 style="margin: 0; color: #0d6efd;">${post.content}</h3>
                             </a>
-
                         </div>
-
                     </c:forEach>
                 </div>
             </c:otherwise>

@@ -91,8 +91,6 @@
                         <hr style="border-top: 1px solid #ddd;">
                         <div class="course-links">
                             <a href="course-details?id=${course.courseId}">View Course Materials &rarr;</a>
-                            <a href="discussions?id=${course.courseId}">Participate in Discussions &rarr;</a>
-                            <a href="assignments?id=${course.courseId}">Submit Assignments &rarr;</a>
                         </div>
                     </div>
                 </c:forEach>

@@ -24,6 +24,8 @@ public class User {
     public enum Role {
         student, teacher
     }
+    @Column(name = "membership", columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private boolean membership;
 
     public String getEmail() {
         return email;
@@ -64,4 +66,8 @@ public class User {
     public void setCreated_at(Date created_at) {
         this.created_at = created_at;
     }
+
+
+    public boolean isMembership() { return membership; }
+    public void setMembership(boolean membership) { this.membership = membership; }
 }

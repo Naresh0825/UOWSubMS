@@ -15,6 +15,34 @@ public class InstructorService {
      * Use Case: Post Announcements
      * Creates a new announcement for a specific course.
      */
+    /**
+     * Retrieves all student submissions for a specific assignment.
+     */
+    /**
+     * Retrieves all student submissions for a specific assignment.
+     */
+    public List<Submission> getSubmissionsForAssignment(int assignmentId) {
+        return em.createQuery(
+                        // FIXED: Changed ORDER BY s.submittedAt to s.submitted_at
+                        "SELECT s FROM Submission s WHERE s.assignment.assignmentId = :assignmentId ORDER BY s.submitted_at ASC",
+                        Submission.class)
+                .setParameter("assignmentId", assignmentId)
+                .getResultList();
+    }
+
+    /**
+     * Grades a student's submission. Enforces the post-deadline rule.
+     */
+    /**
+     * Grades a student's submission. Can be done anytime.
+     */
+    public void gradeSubmission(int submissionId, String grade) throws Exception {
+        Submission submission = em.find(Submission.class, submissionId);
+        if (submission != null) {
+            submission.setGrade(grade);
+            em.merge(submission); // Save the grade to the database
+        }
+    }
     public void postAnnouncement(int courseId, String title, String content) {
         Course course = em.find(Course.class, courseId);
         if (course != null) {
@@ -69,14 +97,22 @@ public class InstructorService {
     /**
      * Use Case: Manage Assignments
      */
-    public void createAssignment(int courseId, String title, String description, Date deadline) {
+    /**
+     * Creates an assignment with an optional resource file attachment.
+     */
+    public void createAssignment(int courseId, String title, String description, java.util.Date deadline, byte[] resourceData, String fileName) {
         Course course = em.find(Course.class, courseId);
         if (course != null) {
             Assignment assignment = new Assignment();
             assignment.setCourse(course);
             assignment.setTitle(title);
-            assignment.setDescription(description); // Define requirements [cite: 36]
+            assignment.setDescription(description);
             assignment.setDeadline(deadline);
+
+            // Handle the new file upload fields
+            assignment.setResourceContent(resourceData);
+            assignment.setResourceFilename(fileName);
+
             em.persist(assignment);
         }
     }
@@ -94,25 +130,12 @@ public class InstructorService {
     /**
      * Use Case: Monitor Student Participation
      */
-    public List<Submission> getAssignmentSubmissions(int assignmentId) {
-        return em.createQuery("SELECT s FROM Submission s WHERE s.assignment.assignmentId = :aId", Submission.class)
-                .setParameter("aId", assignmentId)
-                .getResultList(); // Monitor results [cite: 41]
-    }
 
-    /**
-     * Use Case: Mark or Grade Assignments
-     */
-    public void gradeSubmission(int submissionId, String grade) {
-        Submission submission = em.find(Submission.class, submissionId);
-        if (submission != null) {
-            submission.setGrade(grade);
-            em.merge(submission); // Update grade [cite: 37]
-        }
-    }
-    /**
-     * Replaces the course syllabus with a new file.
-     */
+//    public List<Submission> getAssignmentSubmissions(int assignmentId) {
+//        return em.createQuery("SELECT s FROM Submission s WHERE s.assignment.assignmentId = :aId", Submission.class)
+//                .setParameter("aId", assignmentId)
+//                .getResultList(); // Monitor results [cite: 41]
+//    }
     public void updateCourseOutline(int courseId, byte[] newContent, String newFilename) {
         Course course = em.find(Course.class, courseId);
         if (course != null) {

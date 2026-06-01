@@ -19,6 +19,33 @@ public class StudentService {
      * Use Case: View Discussions
      * Retrieves top-level discussion threads for a course.
      */
+
+    /**
+     * Retrieves a specific student's submission for an assignment.
+     */
+    public Submission getStudentSubmission(int assignmentId, String studentId) {
+        try {
+            return em.createQuery(
+                            "SELECT s FROM Submission s WHERE s.assignment.assignmentId = :aId AND s.student.username = :sId",
+                            Submission.class)
+                    .setParameter("aId", assignmentId)
+                    .setParameter("sId", studentId)
+                    .getSingleResult();
+        } catch (jakarta.persistence.NoResultException e) {
+            return null; // Student hasn't submitted anything yet
+        }
+    }
+    /**
+     * Retrieves all assignments for a specific course.
+     * Orders them by deadline so upcoming assignments appear at the top.
+     */
+    public List<Assignment> getAssignmentsByCourse(int courseId) {
+        return em.createQuery(
+                        "SELECT a FROM Assignment a WHERE a.course.courseId = :courseId ORDER BY a.deadline ASC",
+                        Assignment.class)
+                .setParameter("courseId", courseId)
+                .getResultList();
+    }
     public List<Discussion> getTopLevelDiscussions(int courseId) {
         return em.createQuery(
                         "SELECT d FROM Discussion d WHERE d.course.courseId = :courseId AND d.parentPost IS NULL ORDER BY d.created_at DESC",

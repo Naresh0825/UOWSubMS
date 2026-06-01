@@ -1,4 +1,5 @@
 package com.subms.student.model;
+
 import jakarta.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -24,16 +25,26 @@ public class Assignment {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "deadline")
-    private Date deadline; // Allows students to view deadlines [cite: 24]
+    private Date deadline; // Allows students to view deadlines
 
-    // One assignment can have many student submissions [cite: 37]
+    // --- New Fields for Instructor Resource Uploads ---
+    @Lob
+    @Column(columnDefinition = "LONGBLOB")
+    private byte[] resourceContent;
+
+    @Column(name = "resourceFilename")
+    private String resourceFilename;
+    // --------------------------------------------------
+
+    // One assignment can have many student submissions
     @OneToMany(mappedBy = "assignment", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Submission> submissions;
 
     // Constructors
     public Assignment() {}
 
-    // Getters and Setters
+    // --- Getters and Setters ---
+
     public int getAssignmentId() { return assignmentId; }
     public void setAssignmentId(int assignmentId) { this.assignmentId = assignmentId; }
 
@@ -48,6 +59,12 @@ public class Assignment {
 
     public Date getDeadline() { return deadline; }
     public void setDeadline(Date deadline) { this.deadline = deadline; }
+
+    public byte[] getResourceContent() { return resourceContent; }
+    public void setResourceContent(byte[] resourceContent) { this.resourceContent = resourceContent; }
+
+    public String getResourceFilename() { return resourceFilename; }
+    public void setResourceFilename(String resourceFilename) { this.resourceFilename = resourceFilename; }
 
     public List<Submission> getSubmissions() { return submissions; }
     public void setSubmissions(List<Submission> submissions) { this.submissions = submissions; }

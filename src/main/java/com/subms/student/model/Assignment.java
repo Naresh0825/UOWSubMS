@@ -7,7 +7,8 @@ import java.util.List;
 @Entity
 @Table(name = "assignments")
 public class Assignment {
-
+    // Constructors
+    public Assignment() {}
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "assignment_id")
@@ -40,10 +41,19 @@ public class Assignment {
     @OneToMany(mappedBy = "assignment", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Submission> submissions;
 
-    // Constructors
-    public Assignment() {}
 
-    // --- Getters and Setters ---
+    @Column(name = "is_quiz", columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private boolean isQuiz = false;
+
+    @OneToMany(mappedBy = "assignment", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private java.util.List<AssignmentQuestion> questions;
+
+    // Getters and Setters
+    public boolean isQuiz() { return isQuiz; }
+    public void setQuiz(boolean isQuiz) { this.isQuiz = isQuiz; }
+
+    public java.util.List<AssignmentQuestion> getQuestions() { return questions; }
+    public void setQuestions(java.util.List<AssignmentQuestion> questions) { this.questions = questions; }
 
     public int getAssignmentId() { return assignmentId; }
     public void setAssignmentId(int assignmentId) { this.assignmentId = assignmentId; }

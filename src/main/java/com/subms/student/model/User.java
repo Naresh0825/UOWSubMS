@@ -26,6 +26,15 @@ public class User {
     }
     @Column(name = "membership", columnDefinition = "BOOLEAN DEFAULT FALSE")
     private boolean membership;
+    @Column(name = "skills", length = 500)
+    private String skills; // e.g., "Java, Flutter, BLoC"
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "collaboration_mode")
+    private CollaborationMode collaborationMode = CollaborationMode.Online;
+
+    @Column(name = "availability")
+    private String availability; // e.g., "Weekends", "Mon-Wed Evenings"
 
     public String getEmail() {
         return email;
@@ -70,4 +79,19 @@ public class User {
 
     public boolean isMembership() { return membership; }
     public void setMembership(boolean membership) { this.membership = membership; }
+
+    public enum CollaborationMode {
+        Online, Offline, Hybrid
+    }
+
+
+
+    public String getSkills() { return skills; }
+    public void setSkills(String skills) { this.skills = skills; }
+
+    public CollaborationMode getCollaborationMode() { return collaborationMode; }
+    public void setCollaborationMode(CollaborationMode collaborationMode) { this.collaborationMode = collaborationMode; }
+
+    public String getAvailability() { return availability; }
+    public void setAvailability(String availability) { this.availability = availability; }
 }

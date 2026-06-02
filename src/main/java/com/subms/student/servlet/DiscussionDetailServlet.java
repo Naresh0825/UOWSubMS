@@ -57,25 +57,57 @@ public class DiscussionDetailServlet extends HttpServlet {
         if ("post_reply".equals(action)) {
             String content = request.getParameter("content");
 
-            // Get necessary entities
-            Discussion parentTopic = em.find(Discussion.class, topicId);
-            User author = em.find(User.class, userId);
+            try {
+                // Get necessary entities
+                Discussion parentTopic = em.find(Discussion.class, topicId);
+                User author = em.find(User.class, userId);
 
-            // Create the reply
-            Discussion reply = new Discussion();
-            reply.setAuthor(author);
-            reply.setCourse(parentTopic.getCourse()); // Inherit course from topic
-            reply.setContent(content);
-            reply.setParentPost(parentTopic); // VERY IMPORTANT: Links reply to topic
+                // --- FIXED: ONLY APPLY LIMITS TO STUDENTS WHO ARE NOT PRO MEMBERS ---
+                if (!request.isUserInRole("teacher") && !author.isMembership()) {
 
-            discussionService.savePost(reply);
+                    // Calculate the date exactly 7 days ago
+                    java.util.Date oneWeekAgo = new java.util.Date(System.currentTimeMillis() - (7L * 24 * 3600 * 1000));
+
+                    // Count how many posts & replies this user made in the last week
+                    Long recentPostCount = em.createQuery(
+                                    "SELECT COUNT(d) FROM Discussion d WHERE d.author.username = :username",
+                                    Long.class)
+                            .setParameter("username", userId)
+                            .getSingleResult();
+
+                    if (recentPostCount >= 10) {
+                        throw new Exception("Free tier limit reached: You can only post 10 replies per week. Upgrade to Pro for unlimited posts!");
+                    }
+                }
+
+                // --- PROCEED WITH POSTING ---
+                Discussion reply = new Discussion();
+                reply.setAuthor(author);
+                reply.setCourse(parentTopic.getCourse()); // Inherit course from topic
+                reply.setContent(content);
+                reply.setParentPost(parentTopic); // VERY IMPORTANT: Links reply to topic
+
+                discussionService.savePost(reply);
+
+                // Trigger Green Success Dialog
+                request.getSession().setAttribute("successMessage", "Reply posted successfully!");
+
+            } catch (Exception e) {
+                // Trigger Red Error Dialog (e.g. limit reached)
+                request.getSession().setAttribute("errorMessage", e.getMessage());
+            }
         }
         else if ("delete_reply".equals(action) && request.isUserInRole("teacher")) {
             int replyId = Integer.parseInt(request.getParameter("replyId"));
-            discussionService.deletePost(replyId);
+            try {
+                discussionService.deletePost(replyId);
+                request.getSession().setAttribute("successMessage", "Reply deleted successfully.");
+            } catch (Exception e) {
+                request.getSession().setAttribute("errorMessage", "Failed to delete reply.");
+            }
         }
 
-        // Redirect back to the same discussion thread to see the new reply
+        // Redirect back to the same discussion thread to see the new reply or error
         response.sendRedirect(request.getContextPath() + "/discussion-details?topicId=" + topicId);
     }
 }

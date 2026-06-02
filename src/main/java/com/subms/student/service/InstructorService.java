@@ -11,13 +11,33 @@ public class InstructorService {
 
     @PersistenceContext(unitName = "CoursePU")
     private EntityManager em;
+
     /**
-     * Use Case: Post Announcements
-     * Creates a new announcement for a specific course.
+     * Adds a new question to an auto-marked Quiz assignment.
      */
-    /**
-     * Retrieves all student submissions for a specific assignment.
-     */
+    public void addQuizQuestion(int assignmentId, String questionText, String questionType, String choices, String correctAnswer, int points) throws Exception {
+        Assignment assignment = em.find(Assignment.class, assignmentId);
+
+        if (assignment == null) {
+            throw new Exception("Assignment not found.");
+        }
+
+        // Ensure this assignment is actually flagged as a quiz
+        if (!assignment.isQuiz()) {
+            assignment.setQuiz(true);
+            em.merge(assignment);
+        }
+
+        AssignmentQuestion question = new AssignmentQuestion();
+        question.setAssignment(assignment);
+        question.setQuestionText(questionText);
+        question.setQuestionType(questionType); // "MCQ" or "FITB"
+        question.setChoices(choices); // e.g., "A) Java, B) Python, C) C++"
+        question.setCorrectAnswer(correctAnswer);
+        question.setPoints(points);
+
+        em.persist(question);
+    }
     /**
      * Retrieves all student submissions for a specific assignment.
      */
@@ -100,7 +120,7 @@ public class InstructorService {
     /**
      * Creates an assignment with an optional resource file attachment.
      */
-    public void createAssignment(int courseId, String title, String description, java.util.Date deadline, byte[] resourceData, String fileName) {
+    public void createAssignment(int courseId, String title, String description, java.util.Date deadline, byte[] fileData, String fileName, boolean isQuiz) {
         Course course = em.find(Course.class, courseId);
         if (course != null) {
             Assignment assignment = new Assignment();
@@ -108,11 +128,9 @@ public class InstructorService {
             assignment.setTitle(title);
             assignment.setDescription(description);
             assignment.setDeadline(deadline);
-
-            // Handle the new file upload fields
-            assignment.setResourceContent(resourceData);
+            assignment.setResourceContent(fileData);
             assignment.setResourceFilename(fileName);
-
+            assignment.setQuiz(isQuiz); // <-- ADD THIS LINE
             em.persist(assignment);
         }
     }

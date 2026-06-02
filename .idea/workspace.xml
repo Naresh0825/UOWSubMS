@@ -9,22 +9,48 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="aa0df71d-7c20-45e4-80a6-cf0cceafc11e" name="Changes" comment="-assignment implementation completed">
+    <list default="true" id="aa0df71d-7c20-45e4-80a6-cf0cceafc11e" name="Changes" comment="-material bug fixes">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/subms/student/model/AssignmentQuestion.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/subms/student/servlet/ProfileServlet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/subms/student/servlet/QuizServlet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/site/profile.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/site/takeQuiz.jsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/subms/student/model/Assignment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/subms/student/model/Assignment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/subms/student/model/Submission.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/subms/student/model/Submission.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/subms/student/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/subms/student/model/User.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/subms/student/service/InstructorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/subms/student/service/InstructorService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/subms/student/service/StudentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/subms/student/service/StudentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/subms/student/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/subms/student/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/subms/student/servlet/AssignmentServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/subms/student/servlet/AssignmentServlet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/subms/student/servlet/CourseDetailsServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/subms/student/servlet/CourseDetailsServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/subms/student/servlet/FileDownloadServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/subms/student/servlet/FileDownloadServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/subms/student/servlet/DiscussionDetailServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/subms/student/servlet/DiscussionDetailServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/site/assignments.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/site/assignments.jsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/site/courseDetails.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/site/courseDetails.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/site/dashboard.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/site/dashboard.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/site/discussionDetails.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/site/discussionDetails.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/UOWSubMS/WEB-INF/classes/com/subms/student/model/Assignment.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/UOWSubMS/WEB-INF/classes/com/subms/student/model/Assignment.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/UOWSubMS/WEB-INF/classes/com/subms/student/model/Submission.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/UOWSubMS/WEB-INF/classes/com/subms/student/model/Submission.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/UOWSubMS/WEB-INF/classes/com/subms/student/model/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/UOWSubMS/WEB-INF/classes/com/subms/student/model/User.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/UOWSubMS/WEB-INF/classes/com/subms/student/service/InstructorService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/UOWSubMS/WEB-INF/classes/com/subms/student/service/InstructorService.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/UOWSubMS/WEB-INF/classes/com/subms/student/service/StudentService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/UOWSubMS/WEB-INF/classes/com/subms/student/service/StudentService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/UOWSubMS/WEB-INF/classes/com/subms/student/service/UserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/UOWSubMS/WEB-INF/classes/com/subms/student/service/UserService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/UOWSubMS/WEB-INF/classes/com/subms/student/servlet/AssignmentServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/UOWSubMS/WEB-INF/classes/com/subms/student/servlet/AssignmentServlet.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/UOWSubMS/WEB-INF/classes/com/subms/student/servlet/CourseDetailsServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/UOWSubMS/WEB-INF/classes/com/subms/student/servlet/CourseDetailsServlet.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/UOWSubMS/WEB-INF/classes/com/subms/student/servlet/FileDownloadServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/UOWSubMS/WEB-INF/classes/com/subms/student/servlet/FileDownloadServlet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/UOWSubMS/WEB-INF/classes/com/subms/student/servlet/DiscussionDetailServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/UOWSubMS/WEB-INF/classes/com/subms/student/servlet/DiscussionDetailServlet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/UOWSubMS/site/assignments.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/UOWSubMS/site/assignments.jsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/UOWSubMS/site/courseDetails.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/UOWSubMS/site/courseDetails.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/UOWSubMS/site/dashboard.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/UOWSubMS/site/dashboard.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/UOWSubMS/site/discussionDetails.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/UOWSubMS/site/discussionDetails.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/subms/student/model/Assignment.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/subms/student/model/Assignment.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/subms/student/model/Submission.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/subms/student/model/Submission.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/subms/student/model/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/subms/student/model/User.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/subms/student/service/InstructorService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/subms/student/service/InstructorService.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/subms/student/service/StudentService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/subms/student/service/StudentService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/subms/student/service/UserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/subms/student/service/UserService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/subms/student/servlet/AssignmentServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/subms/student/servlet/AssignmentServlet.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/subms/student/servlet/CourseDetailsServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/subms/student/servlet/CourseDetailsServlet.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/subms/student/servlet/FileDownloadServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/subms/student/servlet/FileDownloadServlet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/subms/student/servlet/DiscussionDetailServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/subms/student/servlet/DiscussionDetailServlet.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,8 +65,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Jsp File" />
         <option value="Class" />
+        <option value="Jsp File" />
       </list>
     </option>
   </component>
@@ -217,7 +243,7 @@
       <workItem from="1778821761898" duration="660000" />
       <workItem from="1778837587352" duration="326000" />
       <workItem from="1780014243867" duration="3000" />
-      <workItem from="1780190353850" duration="10937000" />
+      <workItem from="1780190353850" duration="15904000" />
     </task>
     <task id="LOCAL-00001" summary="-Completed authentication.">
       <option name="closed" value="true" />
@@ -275,7 +301,15 @@
       <option name="project" value="LOCAL" />
       <updated>1780317688492</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="-material bug fixes">
+      <option name="closed" value="true" />
+      <created>1780359873226</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1780359873226</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -299,6 +333,18 @@
     <MESSAGE value="-Completed Post Announcement for instructor" />
     <MESSAGE value="-Completed create discussion for instructor and reply for both role" />
     <MESSAGE value="-assignment implementation completed" />
-    <option name="LAST_COMMIT_MESSAGE" value="-assignment implementation completed" />
+    <MESSAGE value="-material bug fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="-material bug fixes" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/subms/student/servlet/DiscussionDetailServlet.java</url>
+          <line>78</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

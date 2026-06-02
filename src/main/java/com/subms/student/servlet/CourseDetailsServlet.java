@@ -67,8 +67,12 @@ public class CourseDetailsServlet extends HttpServlet {
         // Student & Instructor Actions
         if ("post_discussion".equals(action)) {
             String content = request.getParameter("content");
-            // parentPostId is null for top-level threads
-            studentService.postDiscussionMessage(courseId, userId, content, null);
+            try {
+                studentService.postDiscussionMessage(courseId, userId, content, null);
+            } catch (Exception e) {
+                // Save the error message in the session so it survives the redirect!
+                request.getSession().setAttribute("errorMessage", e.getMessage());
+            }
         }
         else if ("post_announcement".equals(action)) {
             String title = request.getParameter("title");

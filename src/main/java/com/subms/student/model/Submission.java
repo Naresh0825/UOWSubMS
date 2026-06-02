@@ -29,7 +29,13 @@ public class Submission {
     @Temporal(TemporalType.TIMESTAMP)
     private Date submitted_at = new Date();
 
-    // Getters and Setters...
+
+    @Column(name = "attempt_count", columnDefinition = "INT DEFAULT 1")
+    private int attempt_count = 1;
+
+    public int getAttempt_count() { return attempt_count; }
+    public void setAttempt_count(int attempt_count) { this.attempt_count = attempt_count; }
+
 
     public int getSubmission_id() {
         return submission_id;

@@ -42,17 +42,18 @@ public class AssignmentServlet extends HttpServlet {
         String action = request.getParameter("action");
         String userId = request.getUserPrincipal().getName();
 
-        try {
-            if ("create_assignment".equals(action) && request.isUserInRole("teacher")) {
-                int courseId = Integer.parseInt(request.getParameter("courseId"));
+        // 1. TEACHER: Create a brand new assignment
+        if ("create_assignment".equals(action) && request.isUserInRole("teacher")) {
+            int courseId = Integer.parseInt(request.getParameter("courseId"));
+            try {
                 String title = request.getParameter("title");
                 String description = request.getParameter("description");
-
-                // Parse HTML date input (yyyy-MM-dd'T'HH:mm)
                 String deadlineStr = request.getParameter("deadline");
                 java.util.Date deadline = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").parse(deadlineStr);
 
-                // Handle Optional Resource Upload
+                // --- NEW: Grab the isQuiz boolean from the Dropdown ---
+                boolean isQuiz = Boolean.parseBoolean(request.getParameter("isQuiz"));
+
                 Part filePart = request.getPart("resourceFile");
                 byte[] fileData = null;
                 String fileName = null;
@@ -61,15 +62,23 @@ public class AssignmentServlet extends HttpServlet {
                     try (InputStream is = filePart.getInputStream()) { fileData = is.readAllBytes(); }
                 }
 
-                instructorService.createAssignment(courseId, title, description, deadline, fileData, fileName);
-                response.sendRedirect(request.getContextPath() + "/assignments?courseId=" + courseId);
-                return;
+                // Pass isQuiz to the service
+                instructorService.createAssignment(courseId, title, description, deadline, fileData, fileName, isQuiz);
+                request.getSession().setAttribute("successMessage", "Assignment published successfully!");
+
+            } catch (Exception e) {
+                request.getSession().setAttribute("errorMessage", "Failed to create assignment: " + e.getMessage());
             }
+            response.sendRedirect(request.getContextPath() + "/assignments?courseId=" + courseId);
+            return;
+        }
 
-            else if ("submit_work".equals(action) && request.isUserInRole("student")) {
-                int assignmentId = Integer.parseInt(request.getParameter("assignmentId"));
-                int courseId = Integer.parseInt(request.getParameter("courseId"));
+        // 2. STUDENT: Submit standard file-based work
+        else if ("submit_work".equals(action) && request.isUserInRole("student")) {
+            int assignmentId = Integer.parseInt(request.getParameter("assignmentId"));
+            int courseId = Integer.parseInt(request.getParameter("courseId"));
 
+            try {
                 // Handle Student Submission Upload
                 Part filePart = request.getPart("submissionFile");
                 if (filePart != null && filePart.getSize() > 0) {
@@ -77,13 +86,45 @@ public class AssignmentServlet extends HttpServlet {
                     byte[] fileData;
                     try (InputStream is = filePart.getInputStream()) { fileData = is.readAllBytes(); }
 
+                    // This calls the Service where the Premium limits and deadlines are checked
                     studentService.submitAssignment(assignmentId, userId, fileData, fileName);
+
+                    // Trigger the Green Success Dialog!
+                    request.getSession().setAttribute("successMessage", "Your assignment was submitted successfully!");
+                } else {
+                    request.getSession().setAttribute("errorMessage", "Please select a file to upload.");
                 }
-                response.sendRedirect(request.getContextPath() + "/assignments?courseId=" + courseId + "&status=submitted");
-                return;
+            } catch (Exception e) {
+                // Trigger the Red Error Dialog (e.g. "Free tier limit reached" or "Deadline passed")
+                request.getSession().setAttribute("errorMessage", e.getMessage());
             }
-        } catch (Exception e) {
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error processing assignment: " + e.getMessage());
+
+            response.sendRedirect(request.getContextPath() + "/assignments?courseId=" + courseId);
+            return;
+        }
+
+        // 3. TEACHER: Add Auto-Marked Questions to a Quiz
+        else if ("add_quiz_question".equals(action) && request.isUserInRole("teacher")) {
+            int assignmentId = Integer.parseInt(request.getParameter("assignmentId"));
+            int courseId = Integer.parseInt(request.getParameter("courseId"));
+
+            try {
+                String questionType = request.getParameter("questionType");
+                String questionText = request.getParameter("questionText");
+                String choices = request.getParameter("choices"); // Only used for MCQ
+                String correctAnswer = request.getParameter("correctAnswer");
+                int points = Integer.parseInt(request.getParameter("points"));
+
+                // Call the new service method
+                instructorService.addQuizQuestion(assignmentId, questionText, questionType, choices, correctAnswer, points);
+
+                request.getSession().setAttribute("successMessage", "Question added! This assignment is now an Auto-Marked Quiz.");
+            } catch (Exception e) {
+                request.getSession().setAttribute("errorMessage", "Failed to add question: " + e.getMessage());
+            }
+
+            response.sendRedirect(request.getContextPath() + "/assignments?courseId=" + courseId);
+            return;
         }
     }
 }

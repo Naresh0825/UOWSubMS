@@ -349,7 +349,7 @@
                                     <strong style="color: ${post.author.role == 'teacher' ? '#dc3545' : '#20c997'};">
                                             ${post.author.fullname} ${post.author.role == 'teacher' ? '(Instructor)' : ''}
                                     </strong>
-                                    on ${post.createdAt}
+                                    on ${post.created_at}
                                 </small>
 
                                 <% if (isInstructor) { %>

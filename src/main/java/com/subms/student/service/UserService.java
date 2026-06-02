@@ -17,6 +17,28 @@ public class UserService {
                 .getResultList();
     }
     /**
+     * Updates a student's collaboration profile.
+     */
+    public void updateStudentProfile(String username, String skills, String collaborationModeStr, String availability) throws Exception {
+        User user = em.find(User.class, username);
+        if (user != null) {
+            user.setSkills(skills);
+            user.setAvailability(availability);
+
+            try {
+                if (collaborationModeStr != null && !collaborationModeStr.isEmpty()) {
+                    user.setCollaborationMode(User.CollaborationMode.valueOf(collaborationModeStr));
+                }
+            } catch (IllegalArgumentException e) {
+                // Ignore invalid enum strings and keep the existing mode
+            }
+
+            em.merge(user);
+        } else {
+            throw new Exception("User not found.");
+        }
+    }
+    /**
      * Creates a new user in the database via the API.
      */
     public User createUser(String username, String email, String fullname, String roleStr, boolean membership) throws Exception {

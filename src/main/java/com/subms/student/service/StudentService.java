@@ -16,9 +16,68 @@ public class StudentService {
     @PersistenceContext(unitName = "CoursePU")
     private EntityManager em;
     /**
-     * Use Case: View Discussions
-     * Retrieves top-level discussion threads for a course.
+     * Submits and automatically grades a quiz.
      */
+    /**
+     * Submits and automatically grades a quiz. (Strictly 1 Attempt)
+     */
+    public void submitQuiz(int assignmentId, String username, java.util.Map<Integer, String> studentAnswers) throws Exception {
+        User user = em.find(User.class, username);
+        Assignment assignment = em.find(Assignment.class, assignmentId);
+
+        // 1. Deadline Check
+        if (new java.util.Date().after(assignment.getDeadline())) {
+            throw new Exception("Cannot submit: The deadline has passed.");
+        }
+
+        // Fetch existing submission
+        Submission existingSub = getStudentSubmission(assignmentId, username);
+
+        // --- NEW: STRICT ONE-ATTEMPT RULE ---
+        if (existingSub != null) {
+            throw new Exception("Quiz locked: You have already completed this quiz. Multiple attempts are not allowed.");
+        }
+
+        // --- 2. THE AUTO-MARKING ENGINE ---
+        int totalScore = 0;
+        int maxScore = 0;
+
+        // Loop through all questions in this quiz
+        for (AssignmentQuestion q : assignment.getQuestions()) {
+            maxScore += q.getPoints();
+
+            // Get the student's answer for this specific question
+            String studentAnswer = studentAnswers.get(q.getQuestion_id());
+
+            if (studentAnswer != null && !studentAnswer.trim().isEmpty()) {
+                // For Fill-in-the-Blanks, ignore uppercase/lowercase differences
+                if ("FITB".equals(q.getQuestionType())) {
+                    if (studentAnswer.trim().equalsIgnoreCase(q.getCorrectAnswer().trim())) {
+                        totalScore += q.getPoints();
+                    }
+                }
+                // For Multiple Choice / Exact Match, do a strict check
+                else {
+                    if (studentAnswer.trim().equals(q.getCorrectAnswer().trim())) {
+                        totalScore += q.getPoints();
+                    }
+                }
+            }
+        }
+
+        // Format the final auto-grade (e.g., "85/100")
+        String finalGrade = totalScore + "/" + maxScore;
+
+        // --- 3. SAVE THE GRADE ---
+        // (Since existingSub will always be null here, we only need the persist block)
+        Submission newSub = new Submission();
+        newSub.setAssignment(assignment);
+        newSub.setStudent(user);
+        newSub.setAttempt_count(1);
+        newSub.setGrade(finalGrade); // Instantly graded!
+        newSub.setFile_name("Quiz Auto-Submission");
+        em.persist(newSub);
+    }
 
     /**
      * Retrieves a specific student's submission for an assignment.
@@ -149,73 +208,87 @@ public class StudentService {
      * Use Case: Submit Assignments (and Resubmissions)
      * Handles uploading new assignment files or updating existing ones before the deadline.
      */
-    public void submitAssignment(int assignmentId, String studentId, byte[] fileData, String fileName) throws Exception {
+    /**
+     * Submits or re-submits an assignment. Enforces membership limits.
+     */
+    public void submitAssignment(int assignmentId, String username, byte[] fileData, String fileName) throws Exception {
+        User user = em.find(User.class, username);
         Assignment assignment = em.find(Assignment.class, assignmentId);
-        User student = em.find(User.class, studentId);
 
-        if (assignment == null || student == null) {
-            throw new Exception("Invalid assignment or student record.");
+        // 1. Deadline Check (Applies to everyone)
+        if (new java.util.Date().after(assignment.getDeadline())) {
+            throw new Exception("Cannot submit: The deadline has passed.");
         }
 
-        // Enforce Deadline Check
-        if (assignment.getDeadline() != null && new Date().after(assignment.getDeadline())) {
-            throw new Exception("The submission deadline has passed. Late submissions are not allowed.");
-        }
+        // Fetch existing submission (if any)
+        Submission existingSub = getStudentSubmission(assignmentId, username);
 
-        // Check if a submission already exists for this student and assignment
-        Submission existingSubmission = null;
-        try {
-            existingSubmission = em.createQuery(
-                            "SELECT s FROM Submission s WHERE s.assignment.assignmentId = :aId AND s.student.username = :sId",
-                            Submission.class)
-                    .setParameter("aId", assignmentId)
-                    .setParameter("sId", studentId)
-                    .getSingleResult();
-        } catch (NoResultException e) {
-            // No existing submission found, proceed to create a new one
-        }
+        if (existingSub != null) {
+            // --- 2. IT'S A RESUBMISSION: MEMBERSHIP CHECK ---
+            if (!user.isMembership()) {
+                // Free users get the initial submission (attempt 1) + 2 resubmissions (attempts 2 and 3)
+                if (existingSub.getAttempt_count() >= 3) {
+                    throw new Exception("Free tier limit reached: Maximum 2 resubmissions allowed. Upgrade to Pro for unlimited resubmissions!");
+                }
+            }
 
-        if (existingSubmission != null) {
-            // Requirement: "Students may also be allowed to update or resubmit their assignments before the deadline."
-            existingSubmission.setFileContent(fileData);
-            existingSubmission.setFile_name(fileName);
-            existingSubmission.setSubmitted_at(new Date());
-            existingSubmission.setSubmission_status("Resubmitted");
-            em.merge(existingSubmission);
+            // Update the existing submission
+            existingSub.setFileContent(fileData);
+            existingSub.setFile_name(fileName);
+            existingSub.setSubmitted_at(new java.util.Date());
+            existingSub.setAttempt_count(existingSub.getAttempt_count() + 1); // Increment counter
+
+            em.merge(existingSub);
+
         } else {
-            // Requirement: "allows students to upload assignment files" [cite: 24]
-            Submission newSubmission = new Submission();
-            newSubmission.setAssignment(assignment);
-            newSubmission.setStudent(student);
-            newSubmission.setFileContent(fileData);
-            newSubmission.setFile_name(fileName);
-            newSubmission.setSubmission_status("Submitted");
-            em.persist(newSubmission);
+            // --- 3. FIRST TIME SUBMISSION ---
+            Submission newSub = new Submission();
+            newSub.setAssignment(assignment);
+            newSub.setStudent(user);
+            newSub.setFileContent(fileData);
+            newSub.setFile_name(fileName);
+            newSub.setAttempt_count(1);
+
+            em.persist(newSub);
         }
     }
-
     /**
      * Use Case: Participate in Discussions & Collaborate with Other Students [cite: 15, 17, 21, 22]
      * Allows students to post new questions or reply to existing ones.
      */
-    public void postDiscussionMessage(int courseId, String studentId, String content, Integer parentPostId) {
-        Course course = em.find(Course.class, courseId);
-        User author = em.find(User.class, studentId);
+    /**
+     * Posts a discussion message. Enforces membership limits.
+     */
+    public void postDiscussionMessage(int courseId, String username, String content, Integer parentId) throws Exception {
+        User user = em.find(User.class, username);
 
-        if (course != null && author != null) {
-            Discussion discussion = new Discussion();
-            discussion.setCourse(course);
-            discussion.setAuthor(author);
-            discussion.setContent(content);
+        // --- 1. MEMBERSHIP CHECK FOR DISCUSSIONS ---
+        if (!user.isMembership()) {
+            // Calculate the date exactly 7 days ago
+            java.util.Date oneWeekAgo = new java.util.Date(System.currentTimeMillis() - (7L * 24 * 3600 * 1000));
 
-            // Handle nested replies (comment on other students' questions) [cite: 21]
-            if (parentPostId != null) {
-                Discussion parent = em.find(Discussion.class, parentPostId);
-                discussion.setParentPost(parent);
+            // FIXED: Changed d.createdAt to d.created_at to match your entity!
+            Long recentPostCount = em.createQuery(
+                            "SELECT COUNT(d) FROM Discussion d WHERE d.author.username = :username AND d.created_at >= :oneWeekAgo",
+                            Long.class)
+                    .setParameter("username", username)
+                    .setParameter("oneWeekAgo", oneWeekAgo)
+                    .getSingleResult();
+
+            if (recentPostCount >= 10) {
+                throw new Exception("Free tier limit reached: You can only post 10 discussions per week. Upgrade to Pro for unlimited posts!");
             }
-
-            em.persist(discussion);
         }
+
+        // --- 2. PROCEED WITH POSTING ---
+        Course course = em.find(Course.class, courseId);
+        Discussion post = new Discussion();
+        post.setCourse(course);
+        post.setAuthor(user);
+        post.setContent(content);
+        // post.setParentId(parentId); // If threaded
+
+        em.persist(post);
     }
 
     /**

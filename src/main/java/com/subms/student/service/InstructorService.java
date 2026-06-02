@@ -126,6 +126,30 @@ public class InstructorService {
             em.remove(post); // Moderation [cite: 39]
         }
     }
+    /**
+     * Uploads a new material file to a course.
+     */
+    public void uploadCourseMaterial(int courseId, String title, byte[] fileData, String fileName) {
+        Course course = em.find(Course.class, courseId);
+        if (course != null) {
+            Material material = new Material();
+            material.setCourse(course);
+            material.setTitle(title);
+            material.setFileContent(fileData);
+            material.setFile_name(fileName);
+            em.persist(material);
+        }
+    }
+
+    /**
+     * Deletes a course material.
+     */
+    public void deleteCourseMaterial(int materialId) {
+        Material material = em.find(Material.class, materialId);
+        if (material != null) {
+            em.remove(material);
+        }
+    }
 
     /**
      * Use Case: Monitor Student Participation

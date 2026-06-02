@@ -23,6 +23,7 @@ public class StudentService {
     /**
      * Retrieves a specific student's submission for an assignment.
      */
+
     public Submission getStudentSubmission(int assignmentId, String studentId) {
         try {
             return em.createQuery(
@@ -133,11 +134,11 @@ public class StudentService {
     }
 
     /**
-     * Use Case: View Course Materials
-     * Retrieves all materials uploaded by the instructor for a specific course.
+     * Retrieves all materials for a specific course, ordered by newest first.
      */
     public List<Material> getCourseMaterials(int courseId) {
         return em.createQuery(
+                        // FIXED: Changed m.uploaded_at to m.upload_date to match your entity
                         "SELECT m FROM Material m WHERE m.course.courseId = :courseId ORDER BY m.upload_date DESC",
                         Material.class)
                 .setParameter("courseId", courseId)

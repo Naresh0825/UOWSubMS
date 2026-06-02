@@ -36,9 +36,10 @@ public class CourseDetailsServlet extends HttpServlet {
         int courseId = Integer.parseInt(request.getParameter("id"));
         Course course = em.find(Course.class, courseId);
 
-//         You would also fetch Materials here later:
-         List<Material> materials = studentService.getCourseMaterials(courseId);
-         request.setAttribute("materials", materials);
+        // Fetch Materials
+        List<Material> materials = studentService.getCourseMaterials(courseId);
+        request.setAttribute("materials", materials);
+
         List<Announcement> announcements = studentService.getCourseAnnouncements(courseId);
         request.setAttribute("announcements", announcements);
 
@@ -49,7 +50,7 @@ public class CourseDetailsServlet extends HttpServlet {
         request.getRequestDispatcher("/site/courseDetails.jsp").forward(request, response);
     }
 
-    // Handle outline updates (Teacher Only)
+    // Handle course updates (Teacher Only)
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -69,16 +70,17 @@ public class CourseDetailsServlet extends HttpServlet {
             // parentPostId is null for top-level threads
             studentService.postDiscussionMessage(courseId, userId, content, null);
         }
-
-        if ("post_announcement".equals(action)) {
+        else if ("post_announcement".equals(action)) {
             String title = request.getParameter("title");
             String content = request.getParameter("content");
             instructorService.postAnnouncement(courseId, title, content);
         }
 
-        if ("delete".equals(action)) {
+        // Syllabus Actions
+        else if ("delete".equals(action)) {
             instructorService.deleteCourseOutline(courseId);
-        } else if ("replace".equals(action)) {
+        }
+        else if ("replace".equals(action)) {
             Part filePart = request.getPart("newSyllabus");
             if (filePart != null && filePart.getSize() > 0) {
                 byte[] fileData;
@@ -87,6 +89,25 @@ public class CourseDetailsServlet extends HttpServlet {
                 }
                 instructorService.updateCourseOutline(courseId, fileData, filePart.getSubmittedFileName());
             }
+        }
+
+        // --- NEW: Course Materials Actions ---
+        else if ("upload_material".equals(action)) {
+            String materialTitle = request.getParameter("materialTitle");
+            Part filePart = request.getPart("materialFile");
+
+            if (filePart != null && filePart.getSize() > 0) {
+                byte[] fileData;
+                try (InputStream is = filePart.getInputStream()) {
+                    fileData = is.readAllBytes();
+                }
+                String fileName = filePart.getSubmittedFileName();
+                instructorService.uploadCourseMaterial(courseId, materialTitle, fileData, fileName);
+            }
+        }
+        else if ("delete_material".equals(action)) {
+            int materialId = Integer.parseInt(request.getParameter("materialId"));
+            instructorService.deleteCourseMaterial(materialId);
         }
 
         // Refresh the page

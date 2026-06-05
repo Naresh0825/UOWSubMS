@@ -5,7 +5,7 @@ FROM quay.io/wildfly/wildfly:31.0.1.Final-jdk17
 ENV JBOSS_HOME /opt/jboss/wildfly
 
 # Valitag OMS
-COPY target/ROOT.war ${JBOSS_HOME}/standalone/deployments/ROOT.war
+COPY target/UOWSubMS.war ${JBOSS_HOME}/standalone/deployments/UOWSubMS.war
 
 # Setup wildfly standalone instance
 RUN ${JBOSS_HOME}/bin/add-user.sh admin admin --silent

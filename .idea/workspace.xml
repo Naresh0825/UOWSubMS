@@ -9,12 +9,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="aa0df71d-7c20-45e4-80a6-cf0cceafc11e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/docker/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker/setup-wildfly.cli" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/UOWSubMS/WEB-INF/classes/com/subms/student/servlet/DiscussionDetailServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/UOWSubMS/WEB-INF/classes/com/subms/student/servlet/DiscussionDetailServlet.class" afterDir="false" />
-    </list>
+    <list default="true" id="aa0df71d-7c20-45e4-80a6-cf0cceafc11e" name="Changes" comment="docker" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -208,7 +203,7 @@
       <workItem from="1780014243867" duration="3000" />
       <workItem from="1780190353850" duration="16261000" />
       <workItem from="1780368780537" duration="2391000" />
-      <workItem from="1780632620457" duration="1087000" />
+      <workItem from="1780632620457" duration="1487000" />
     </task>
     <task id="LOCAL-00001" summary="-Completed authentication.">
       <option name="closed" value="true" />
@@ -274,7 +269,15 @@
       <option name="project" value="LOCAL" />
       <updated>1780359873226</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="docker">
+      <option name="closed" value="true" />
+      <created>1780633729229</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1780633729230</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -299,6 +302,7 @@
     <MESSAGE value="-Completed create discussion for instructor and reply for both role" />
     <MESSAGE value="-assignment implementation completed" />
     <MESSAGE value="-material bug fixes" />
-    <option name="LAST_COMMIT_MESSAGE" value="-material bug fixes" />
+    <MESSAGE value="docker" />
+    <option name="LAST_COMMIT_MESSAGE" value="docker" />
   </component>
 </project>

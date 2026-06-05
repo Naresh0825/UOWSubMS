@@ -1,0 +1,14 @@
+services:
+  valitag-oms:
+    image: valitag.azurecr.io/oms:local
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: wildfly-31-oms
+    env_file: dev.env
+    ports:
+      - "80:8080"      # HTTP
+      - "443:8443"    # HTTPS
+      - "9990:9990"  # Management Console (Primary)
+      - "8787:8787"  # Remote debugging
+    restart: on-failure:3

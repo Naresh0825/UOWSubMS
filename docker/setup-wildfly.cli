@@ -1,0 +1,93 @@
+# Switch to the correct server config if needed
+embed-server --server-config=standalone.xml --std-out=echo
+
+# System Properties
+if (outcome != success) of /system-property=au.unitech.core.properties.company.image:read-resource
+    /system-property=au.unitech.core.properties.company.image:add(value="valitag.png")
+end-if
+
+if (outcome != success) of /system-property=au.unitech.core.properties.sitetype:read-resource
+    /system-property=au.unitech.core.properties.sitetype:add(value="dev")
+end-if
+
+if (outcome != success) of /system-property=au.unitech.oms.version:read-resource
+    /system-property=au.unitech.oms.version:add(value="5.0.0-260414.0901-dev")
+end-if
+
+if (outcome != success) of /subsystem=datasources/data-source=OMS2DB:read-resource
+    /subsystem=datasources/data-source=OMS2DB:add( \
+        jndi-name="java:/OMS2DB", \
+        jta=true, \
+        driver-name="ROOT.war_com.mysql.cj.jdbc.Driver_8_3", \
+        driver-class=com.mysql.cj.jdbc.Driver, \
+        connection-url="jdbc:mysql://${env.DB_HOST}:3306/${env.DB_NAME}?sslMode=REQUIRED", \
+        user-name="${env.DB_USER}", \
+        password="${env.DB_PASSWORD}", \
+        valid-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLValidConnectionChecker, \
+        exception-sorter-class-name=org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLExceptionSorter, \
+        validate-on-match=true, \
+        enabled=true \
+    )
+end-if
+
+# SMTP Outbound Socket Binding
+/socket-binding-group=standard-sockets/remote-destination-outbound-socket-binding=mail-smtp:write-attribute( \
+    name=host, \
+    value="${env.MAIL_HOST}" \
+)
+
+/socket-binding-group=standard-sockets/remote-destination-outbound-socket-binding=mail-smtp:write-attribute( \
+    name=port, \
+    value=${env.MAIL_PORT:587} \
+)
+
+# Mail From Address
+/subsystem=mail/mail-session=default:write-attribute( \
+    name=from, \
+    value="${env.MAIL_FROM:oms@valitag.com.au}" \
+)
+
+# SMTP Server
+if (outcome == success) of /subsystem=mail/mail-session=default/server=smtp:read-resource
+    /subsystem=mail/mail-session=default/server=smtp:remove
+end-if
+
+/subsystem=mail/mail-session=default/server=smtp:add( \
+    outbound-socket-binding-ref=mail-smtp, \
+    tls=true, \
+    ssl=false \
+)
+
+/subsystem=mail/mail-session=default/server=smtp:write-attribute( \
+    name=username, \
+    value="${env.MAIL_USER}" \
+)
+
+/subsystem=mail/mail-session=default/server=smtp:write-attribute( \
+    name=password, \
+    value="${env.MAIL_PASSWORD}" \
+)
+
+# Logging
+if (outcome != success) of /subsystem=logging/logger=org.hibernate.SQL:read-resource
+    /subsystem=logging/logger=org.hibernate.SQL:add(level=DEBUG)
+end-if
+
+/subsystem=logging/logger=org.hibernate.SQL:write-attribute(name=level,value=DEBUG)
+
+if (outcome != success) of /subsystem=logging/logger=org.hibernate.type.descriptor.sql:read-resource
+    /subsystem=logging/logger=org.hibernate.type.descriptor.sql:add(level=TRACE)
+end-if
+
+/subsystem=logging/logger=org.hibernate.type.descriptor.sql:write-attribute(name=level,value=TRACE)
+
+if (outcome != success) of /subsystem=logging/logger=org.hibernate.orm.jdbc.bind:read-resource
+    /subsystem=logging/logger=org.hibernate.orm.jdbc.bind:add(level=TRACE)
+end-if
+
+/subsystem=logging/logger=org.hibernate.orm.jdbc.bind:write-attribute(name=level,value=TRACE)
+
+/subsystem=undertow/server=default-server/http-listener=default:write-attribute(name=proxy-address-forwarding,value=true)
+
+# Persist changes
+stop-embedded-server
